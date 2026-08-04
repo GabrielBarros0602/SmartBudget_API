@@ -45,7 +45,7 @@ interface open to whatever consumes it.
 
 | Concern | Choice |
 |---|---|
-| Language | Python 3.12 |
+| Language | Python 3.11 |
 | Web framework | FastAPI |
 | Database | PostgreSQL |
 | ORM / migrations | SQLAlchemy + Alembic |
@@ -92,7 +92,7 @@ tests/
 
 ## Getting started
 
-Requires Python 3.12+.
+Requires Python 3.11+.
 
 ```powershell
 git clone https://github.com/GabrielBarros0602/SmartBudget_API.git
@@ -199,7 +199,7 @@ reavaliar a decisão estão em [ADR-001](docs/adr/ADR-001-layered-architecture.m
 
 ## Como rodar
 
-Requer Python 3.12+.
+Requer Python 3.11+.
 
 ```powershell
 git clone https://github.com/GabrielBarros0602/SmartBudget_API.git
