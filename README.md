@@ -220,3 +220,13 @@ Documentação interativa em `http://127.0.0.1:8000/docs`.
 
 S0 (estrutura do repositório) concluído. Próximo: S1 — modelagem de domínio,
 PostgreSQL via Docker e migrações com Alembic.
+
+## Mais informações
+
+Esta seção cobre o essencial. O restante está na versão em inglês, no topo
+deste arquivo — incluindo **as fontes das estatísticas citadas acima**:
+
+[Features por sprint](#features) · [Stack completa](#tech-stack) ·
+[Estrutura de pastas](#project-structure) · [Roadmap](#roadmap) ·
+[Convenções de contribuição](#contributing-conventions) ·
+[Fontes](#sources)
