@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     app_name: str = "SmartBudget API"
     environment: str = "development"
     version: str = "0.1.0"
+    database_url: str
 
 
 @lru_cache
