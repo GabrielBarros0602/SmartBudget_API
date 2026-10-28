@@ -149,6 +149,17 @@ Do not enable *Require approvals* on a solo repository: GitHub refuses to let an
 author approve their own pull request, so it would make every merge impossible
 or force an admin bypass, which turns the rule into theatre.
 
+## Sprint discipline
+
+Development is governed by [`docs/ROADMAP.md`](docs/ROADMAP.md), and its header
+holds the rules: a `Decidir:` item closes only when its ADR is committed, a
+checkbox is ticked in the same commit that completes the item and only once the
+work is on `origin`, and a sprint closes with its own commit —
+`docs(roadmap): close S1`.
+
+One checklist item is roughly one to three commits. If an item needs ten, it was
+two items.
+
 ---
 
 ## Português
@@ -184,4 +195,9 @@ Não habilite *Require approvals* em repositório solo: o GitHub não deixa o au
 aprovar o próprio PR, então todo merge ficaria impossível ou dependeria de
 bypass de admin.
 
-Código, comentários e mensagens de commit em inglês.
+**Disciplina de sprint:** o [`docs/ROADMAP.md`](docs/ROADMAP.md) governa o
+desenvolvimento, e as regras estão no cabeçalho dele. Um item de checklist são um
+a três commits; se precisar de dez, eram dois itens.
+
+Código, comentários e mensagens de commit em inglês; o roadmap em português,
+porque é instrumento de trabalho.

@@ -38,7 +38,7 @@ depois.
 
 - [x] `CONTRIBUTING.md`: tipos de commit ampliados, escopos de serviço único, rodapé
       `Refs: ADR-00X`, anti-patterns, branches e pull requests
-- [ ] `docs/ROADMAP.md` como checklist governante, no lugar da tabela estática do README e do
+- [x] `docs/ROADMAP.md` como checklist governante, no lugar da tabela estática do README e do
       checklist do diário local, que não é versionado
 - [ ] Tabela de pendências abertas neste arquivo, com a coluna "onde resolver"
 - [ ] CI no GitHub Actions, em push na `main` e em pull request: `ruff check`,
