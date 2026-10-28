@@ -160,6 +160,19 @@ work is on `origin`, and a sprint closes with its own commit —
 One checklist item is roughly one to three commits. If an item needs ten, it was
 two items.
 
+## Before every commit
+
+The same checks CI runs, one per line so a failure says which one it was:
+
+```
+ruff format .
+ruff check .
+pytest
+```
+
+CI runs `ruff format --check`, so unformatted code fails the build rather than
+being fixed silently.
+
 ---
 
 ## Português
@@ -198,6 +211,10 @@ bypass de admin.
 **Disciplina de sprint:** o [`docs/ROADMAP.md`](docs/ROADMAP.md) governa o
 desenvolvimento, e as regras estão no cabeçalho dele. Um item de checklist são um
 a três commits; se precisar de dez, eram dois itens.
+
+**Antes de cada commit:** `ruff format .`, `ruff check .` e `pytest`. O CI roda
+`ruff format --check`, então código mal formatado falha o build em vez de ser
+corrigido em silêncio.
 
 Código, comentários e mensagens de commit em inglês; o roadmap em português,
 porque é instrumento de trabalho.
