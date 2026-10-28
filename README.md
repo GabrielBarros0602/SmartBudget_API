@@ -6,7 +6,7 @@ and enforcing monthly budgets with threshold alerts.
 Built with Python, FastAPI and PostgreSQL, using a layered architecture and
 documented architectural decisions.
 
-> **Status:** in development — S0 (scaffolding) complete. See [Roadmap](#roadmap).
+> **Status:** in development. Progress is tracked in [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 ---
 
@@ -122,13 +122,9 @@ ruff format .
 
 ## Roadmap
 
-| Sprint | Scope | Status |
-|---|---|---|
-| S0 | Repo scaffolding, `GET /health`, ADR-001 | ✅ Done |
-| S1 | Domain modelling, PostgreSQL via Docker, Alembic migrations | ⏳ Next |
-| S2 | Transactions and categories: CRUD + business rules | ☐ |
-| S3 | JWT auth, budgets and threshold alerts | ☐ |
-| S4 | pytest suite, GitHub Actions CI, Dockerfile, demo script | ☐ |
+Development is governed by [`docs/ROADMAP.md`](docs/ROADMAP.md) — a sprint
+checklist, written in Portuguese as a working instrument, where every
+architectural decision is an item that closes only once its ADR is committed.
 
 ## Contributing conventions
 
@@ -216,8 +212,9 @@ Documentação interativa em `http://127.0.0.1:8000/docs`.
 
 ## Status
 
-S0 (estrutura do repositório) concluído. Próximo: S1 — modelagem de domínio,
-PostgreSQL via Docker e migrações com Alembic.
+Em desenvolvimento. O andamento fica em [`docs/ROADMAP.md`](docs/ROADMAP.md), um
+checklist por sprint onde cada decisão arquitetural só fecha quando o ADR
+correspondente está commitado.
 
 ## Mais informações
 
@@ -225,6 +222,6 @@ Esta seção cobre o essencial. O restante está na versão em inglês, no topo
 deste arquivo — incluindo **as fontes das estatísticas citadas acima**:
 
 [Features por sprint](#features) · [Stack completa](#tech-stack) ·
-[Estrutura de pastas](#project-structure) · [Roadmap](#roadmap) ·
+[Estrutura de pastas](#project-structure) · [Roadmap](docs/ROADMAP.md) ·
 [Convenções de contribuição](CONTRIBUTING.md#português) ·
 [Fontes](#sources)
