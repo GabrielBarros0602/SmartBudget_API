@@ -16,6 +16,15 @@ select = ["E", "W", "F", "I", "B", "UP", "SIM", "N"]
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["S101"]
 
+[tool.mypy]
+python_version = "3.11"
+packages = ["app", "tests"]
+strict = true
+warn_unreachable = true
+# Without the plugin, strict rejects Settings() for its required database_url:
+# mypy cannot know that BaseSettings fills fields from the environment.
+plugins = ["pydantic.mypy"]
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
