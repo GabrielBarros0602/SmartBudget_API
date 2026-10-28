@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  api:
+    # The name does not list the steps: branch protection requires the check by
+    # name, and a name that enumerates steps goes stale when one is added.
+    name: API checks
+    runs-on: ubuntu-latest
+
+    env:
+      # Settings requires it with no default. No test connects yet, so a
+      # well-formed URL is enough; a PostgreSQL service arrives with migrations.
+      DATABASE_URL: postgresql+psycopg://smartbudget:smartbudget@localhost:5432/smartbudget
+
+    steps:
+      - uses: actions/checkout@v7
+
+      # .python-version is the one place the version is written, so this
+      # workflow and a development machine cannot quietly disagree about it.
+      - uses: actions/setup-python@v7
+        with:
+          python-version-file: .python-version
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Check formatting
+        run: ruff format --check .
+
+      - name: Test
+        run: pytest
