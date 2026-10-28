@@ -56,7 +56,7 @@ depois.
 - [x] mypy strict, no CI e antes de cada commit
 - [x] `main` protegida: pull request obrigatório com o check `API checks` verde, merge só por
       rebase, sem exigir aprovação
-- [ ] `GET /health/ready` com `SELECT 1` no banco, separado do liveness `GET /health`
+- [x] `GET /health/ready` com `SELECT 1` no banco, separado do liveness `GET /health`
 - [ ] `requirements.in` e `requirements-dev.in` compilados com
       `uv pip compile --universal --python-version 3.11`; o CI regenera e falha se algum
       arquivo mudar
