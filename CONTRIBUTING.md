@@ -167,6 +167,7 @@ The same checks CI runs, one per line so a failure says which one it was:
 ```
 ruff format .
 ruff check .
+mypy
 pytest
 ```
 
@@ -212,7 +213,7 @@ bypass de admin.
 desenvolvimento, e as regras estão no cabeçalho dele. Um item de checklist são um
 a três commits; se precisar de dez, eram dois itens.
 
-**Antes de cada commit:** `ruff format .`, `ruff check .` e `pytest`. O CI roda
+**Antes de cada commit:** `ruff format .`, `ruff check .`, `mypy` e `pytest`. O CI roda
 `ruff format --check`, então código mal formatado falha o build em vez de ser
 corrigido em silêncio.
 

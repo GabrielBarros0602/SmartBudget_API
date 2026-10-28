@@ -53,7 +53,7 @@ depois.
 - [x] Tabela de pendências abertas neste arquivo, com a coluna "onde resolver"
 - [x] CI no GitHub Actions, em push na `main` e em pull request: `ruff check`,
       `ruff format --check` e `pytest`, com `DATABASE_URL` definida no ambiente
-- [ ] mypy strict, no CI e antes de cada commit
+- [x] mypy strict, no CI e antes de cada commit
 - [ ] `main` protegida: pull request obrigatório com o check `API checks` verde, merge só por
       rebase, sem exigir aprovação
 - [ ] `GET /health/ready` com `SELECT 1` no banco, separado do liveness `GET /health`
