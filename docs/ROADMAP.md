@@ -25,7 +25,6 @@ Fechar uma pendência é removê-la desta tabela no mesmo commit que a resolve.
 
 | Pendência | Onde resolver |
 |---|---|
-| `Settings` exige `database_url` sem default, de propósito: a aplicação se recusa a subir mal configurada. O efeito colateral é que quem clona e roda `pytest` antes de criar o `.env` vê os testes de health falharem — e não por causa do banco: o `create_app()` chama `get_settings()`, e a validação falha antes de qualquer conexão. Localmente o README já manda criar o `.env` primeiro; o CI não tem `.env` | CI do S0.5 — `DATABASE_URL` no ambiente do workflow |
 
 ---
 
@@ -52,7 +51,7 @@ depois.
 - [x] `docs/ROADMAP.md` como checklist governante, no lugar da tabela estática do README e do
       checklist do diário local, que não é versionado
 - [x] Tabela de pendências abertas neste arquivo, com a coluna "onde resolver"
-- [ ] CI no GitHub Actions, em push na `main` e em pull request: `ruff check`,
+- [x] CI no GitHub Actions, em push na `main` e em pull request: `ruff check`,
       `ruff format --check` e `pytest`, com `DATABASE_URL` definida no ambiente
 - [ ] mypy strict, no CI e antes de cada commit
 - [ ] `main` protegida: pull request obrigatório com o check `API checks` verde, merge só por
