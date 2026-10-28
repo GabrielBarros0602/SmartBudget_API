@@ -36,6 +36,21 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
 
+      - name: Verify the lockfiles are what their .in files produce
+        # Fails when an .in changed without regenerating, or a hand edit dropped
+        # a package or a marker — edits that still install here on Linux, so no
+        # other step can tell. The plain form keeps existing pins, so a version
+        # moved by hand to another valid one passes; an untouched branch
+        # regenerates byte for byte.
+        run: |
+          python_version="$(cat .python-version)"
+          uv pip compile -q --universal --python-version "$python_version" requirements.in -o requirements.txt
+          uv pip compile -q --universal --python-version "$python_version" requirements-dev.in -o requirements-dev.txt
+          if ! git diff --exit-code -- requirements.txt requirements-dev.txt; then
+            echo "::error::A lockfile is not what its .in file produces. Regenerate it with the commands in CONTRIBUTING.md."
+            exit 1
+          fi
+
       - name: Lint
         run: ruff check .
 
