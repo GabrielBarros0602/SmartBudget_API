@@ -16,7 +16,13 @@ class Base(DeclarativeBase):
     """
 
 
-engine = create_engine(get_settings().database_url, pool_pre_ping=True)
+engine = create_engine(
+    get_settings().database_url,
+    pool_pre_ping=True,
+    # libpq waits forever by default, so an unreachable database would hang the
+    # request instead of failing it — the readiness probe included.
+    connect_args={"connect_timeout": 3},
+)
 
 SessionLocal = sessionmaker(bind=engine, autoflush=False, expire_on_commit=False)
 
