@@ -18,6 +18,17 @@ Convenções de commit em [`../CONTRIBUTING.md`](../CONTRIBUTING.md). Decisões 
 
 ---
 
+## Pendências abertas
+
+Questões conhecidas que não estão resolvidas. Vivem aqui para não depender de ninguém lembrar.
+Fechar uma pendência é removê-la desta tabela no mesmo commit que a resolve.
+
+| Pendência | Onde resolver |
+|---|---|
+| `Settings` exige `database_url` sem default, de propósito: a aplicação se recusa a subir mal configurada. O efeito colateral é que quem clona e roda `pytest` antes de criar o `.env` vê os testes de health falharem — e não por causa do banco: o `create_app()` chama `get_settings()`, e a validação falha antes de qualquer conexão. Localmente o README já manda criar o `.env` primeiro; o CI não tem `.env` | CI do S0.5 — `DATABASE_URL` no ambiente do workflow |
+
+---
+
 ## S0 — Estrutura do repositório · ✅ Concluído
 
 - [x] Repositório criado e conectado ao remote
@@ -40,7 +51,7 @@ depois.
       `Refs: ADR-00X`, anti-patterns, branches e pull requests
 - [x] `docs/ROADMAP.md` como checklist governante, no lugar da tabela estática do README e do
       checklist do diário local, que não é versionado
-- [ ] Tabela de pendências abertas neste arquivo, com a coluna "onde resolver"
+- [x] Tabela de pendências abertas neste arquivo, com a coluna "onde resolver"
 - [ ] CI no GitHub Actions, em push na `main` e em pull request: `ruff check`,
       `ruff format --check` e `pytest`, com `DATABASE_URL` definida no ambiente
 - [ ] mypy strict, no CI e antes de cada commit
