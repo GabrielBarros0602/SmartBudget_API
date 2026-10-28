@@ -1,0 +1,16 @@
+# Development and CI dependencies, plus the runtime ones, so one file installs
+# everything a developer or CI needs.
+#
+# Regenerate the lockfile after editing this file:
+#   uv pip compile --universal --python-version 3.11 requirements-dev.in -o requirements-dev.txt
+#
+# The constraint keeps every runtime package at the version requirements.txt
+# pins, so the container and the test run cannot resolve them differently.
+-r requirements.in
+-c requirements.txt
+
+uv
+pytest
+httpx2
+ruff
+mypy
