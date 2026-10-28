@@ -40,7 +40,7 @@ Fechar uma pendência é removê-la desta tabela no mesmo commit que a resolve.
 
 ---
 
-## S0.5 — Processo e qualidade · 🔄 Em andamento
+## S0.5 — Processo e qualidade · ✅ Concluído
 
 Adotado do SyncaAI em outubro de 2026, com o S1 já em andamento. Vem antes do bloco 3 do S1
 de propósito: o código de domínio nasce dentro do processo, em vez de ser trazido para ele
