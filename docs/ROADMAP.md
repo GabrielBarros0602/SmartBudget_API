@@ -86,13 +86,25 @@ a divergência que lockfile existe para evitar.
 ### Bloco 3 — Modelos e restrições
 
 - [ ] Modelar o domínio: `User`, `Category`, `Transaction`, `Budget`
-- [ ] Restrições no schema, não só no Python: foreign keys, `NOT NULL`, nome de categoria
-      único por usuário
+- [ ] Restrições no schema, não só no Python, até onde o domínio pedir: foreign keys,
+      `NOT NULL`, `CHECK` em valores, unicidade composta (nome de categoria único por usuário),
+      `ON DELETE CASCADE` explícito onde o filho não existe sem o pai, e índice funcional onde a
+      unicidade recai sobre valor normalizado (`lower(email)`). Validação no Python vale para um
+      caminho de código; constraint vale para todos, incluindo o `INSERT` manual e a importação
+      de extrato do stretch
 - [ ] Índices nas colunas que o relatório mensal vai filtrar
 
 ### Bloco 4 — Migrations
 
+- [ ] **Decidir: quando as migrations rodam.** A direção é não aplicá-las no start do container
+      e rodá-las explicitamente, para que um deploy nunca mute o schema como efeito colateral de
+      um restart — e um restart pedido pelo liveness do S0.5 nunca vire migration. Fecha antes
+      da primeira migration, porque é ela que fixa como o `Dockerfile` e o README do S4 sobem o
+      banco
 - [ ] Alembic inicializado, primeira migration gerada e aplicada
+- [ ] Migration verificada nos dois sentidos pelo CI: `upgrade`, `downgrade`, `upgrade`. Um
+      `downgrade` que nunca rodou só se revela quebrado no dia em que é preciso; no CI a
+      verificação deixa de ser passo manual e vira permanente
 
 ---
 
@@ -103,8 +115,14 @@ a divergência que lockfile existe para evitar.
 - [ ] Serviços com as regras de verdade
 - [ ] Routers conectados ao `api/v1/router.py`
 - [ ] Endpoint de relatório mensal — agregação por categoria
-- [ ] Exceções de domínio mapeadas para status HTTP num lugar só, não `HTTPException` espalhado
-      pelos serviços
+- [ ] Erros de domínio mapeados para status HTTP num lugar só; nenhum serviço importa
+      `HTTPException`. Serviço que conhece HTTP não pode ser chamado fora de uma requisição —
+      por teste unitário ou por script — sem arrastar o FastAPI junto, e o mapeamento espalhado
+      diverge: o mesmo erro vira `400` num endpoint e `422` no outro
+- [ ] Testes de integração contra PostgreSQL real, marcados como `integration` para poderem ser
+      desmarcados com `pytest -m "not integration"`. Sessão falsa não pega o que importa aqui —
+      constraint violada, `NUMERIC` arredondando, agregação mensal sobre `DATE` —, e o marcador
+      mantém a suíte rápida rodando sem Docker
 - [ ] Paginação nos endpoints de listagem
 - [ ] Regras de negócio a definir: categoria com transações pode ser apagada? Transação pode ter
       data futura? Valor zero é válido?
@@ -113,13 +131,18 @@ a divergência que lockfile existe para evitar.
 
 ## S3 — Autenticação, orçamentos e alertas
 
-- [ ] **Decidir: algoritmo de hash de senha** — bcrypt ou argon2. Nunca um SHA puro: hashes de
-      uso geral são rápidos, e rápido é exatamente o errado aqui
+- [ ] **Decidir: parâmetros do hash de senha com argon2id** (`m`, `t`, `p`), registrados em ADR.
+      Nunca um SHA puro: hashes de uso geral são rápidos, e rápido é exatamente o errado aqui.
+      Entre os lentos, argon2id é memory-hard, o que encarece ataque com GPU. O SyncaAI já
+      decidiu e documentou os parâmetros dele — ponto de partida, não resposta pronta
 - [ ] Emissão e verificação de JWT
 - [ ] Dependência `get_current_user`
-- [ ] **Isolamento por dono em toda query.** A falha de segurança mais provável deste projeto: o
-      usuário A ler `/transactions/42`, que pertence ao usuário B. O filtro por `user_id`
-      precisa viver no repositório, não ser lembrado por cada serviço
+- [ ] **Classe base de repositório com escopo por dono, sem nenhum acessor sem escopo** — a
+      query sem filtro de `user_id` não é expressável. Ataca a falha de segurança mais provável
+      deste projeto: o usuário A ler `/transactions/42`, que pertence ao usuário B. Um filtro
+      lembrado por cada serviço falha na primeira vez que alguém esquece; uma base que não
+      oferece o caminho sem filtro não depende de memória. O ADR-002 já depende disso: as chaves
+      sequenciais só são seguras com a checagem de dono
 - [ ] Entidade `Budget`: limite por categoria por mês
 - [ ] **Decidir: como os alertas são produzidos.** Calculados na leitura, ou persistidos como
       eventos quando o limiar é cruzado? Muda o que a API pode oferecer (histórico?
@@ -131,7 +154,7 @@ a divergência que lockfile existe para evitar.
 ## S4 — Testes, CI, Docker, acabamento
 
 - [ ] Pirâmide de testes: unitários para serviços (repositórios falsos), integração para
-      repositórios (PostgreSQL real), uma camada fina de ponta a ponta
+      repositórios (PostgreSQL real, existentes desde o S2), uma camada fina de ponta a ponta
 - [ ] Cobertura medida e reportada — escolher uma meta e justificá-la
 - ~~GitHub Actions: ruff + pytest a cada push~~ → antecipado para o S0.5
 - [ ] `Dockerfile` multi-stage (build vs runtime), usuário não-root
