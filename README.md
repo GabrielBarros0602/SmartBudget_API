@@ -132,10 +132,8 @@ ruff format .
 
 ## Contributing conventions
 
-- Commits follow [Conventional Commits](https://www.conventionalcommits.org/):
-  `feat:`, `fix:`, `chore:`, `docs:`, `test:`, `refactor:` — imperative mood, small and frequent.
-- Code, comments and commit messages are written in English.
-- Every non-trivial architectural decision gets an ADR in `docs/adr/`.
+Commit format, scopes, ADR references, branches and pull requests are in
+[CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Sources
 
@@ -228,5 +226,5 @@ deste arquivo — incluindo **as fontes das estatísticas citadas acima**:
 
 [Features por sprint](#features) · [Stack completa](#tech-stack) ·
 [Estrutura de pastas](#project-structure) · [Roadmap](#roadmap) ·
-[Convenções de contribuição](#contributing-conventions) ·
+[Convenções de contribuição](CONTRIBUTING.md#português) ·
 [Fontes](#sources)
