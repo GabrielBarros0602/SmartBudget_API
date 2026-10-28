@@ -149,6 +149,61 @@ Do not enable *Require approvals* on a solo repository: GitHub refuses to let an
 author approve their own pull request, so it would make every merge impossible
 or force an admin bypass, which turns the rule into theatre.
 
+## Dependencies
+
+Declared in `requirements.in` and `requirements-dev.in`. Never edit the `.txt`
+files by hand — they are generated.
+
+```
+uv pip compile --universal --python-version 3.11 requirements.in -o requirements.txt
+uv pip compile --universal --python-version 3.11 requirements-dev.in -o requirements-dev.txt
+pip install -r requirements-dev.txt
+```
+
+`requirements-dev.txt` includes the runtime dependencies, at the versions
+`requirements.txt` pins, so one install gives a working development environment.
+A runtime-only install — the future Docker image — uses `requirements.txt`
+alone.
+
+**That command does not update versions, and the failure is silent.**
+`uv pip compile` reads the existing `.txt` as a preference and keeps every pin
+that still satisfies the `.in`, so rerunning it after adding a package resolves
+the new one and leaves the rest where they were. Run it expecting an update and
+you get an empty diff and no error. Updating versions is a different command:
+
+```
+uv pip compile --universal --python-version 3.11 --upgrade requirements.in -o requirements.txt
+uv pip compile --universal --python-version 3.11 --upgrade requirements-dev.in -o requirements-dev.txt
+```
+
+Use the plain form when an `.in` changed. Use `--upgrade` when the point is to
+move.
+
+CI reruns the plain form with the pinned `uv` and fails if either file changes.
+That catches an `.in` edited without regenerating, and a hand edit that drops a
+package or a marker. It does not catch a version moved by hand to another valid
+one — one more reason never to edit the `.txt` files.
+
+**Why uv resolves but pip installs.** Development happens on Windows; CI and the
+runtime are Linux. A resolver that only sees the platform it runs on produces a
+lockfile for that platform: resolved on Windows, this project's lockfile would
+pin `tzdata` and `colorama` unconditionally and leave out `uvloop`, which only
+installs on Linux. `--universal` emits environment markers instead, so one file
+is correct on both:
+
+```
+uvloop==0.23.0 ; platform_python_implementation != 'PyPy' and sys_platform != 'cygwin' and sys_platform != 'win32'
+```
+
+`--python-version 3.11` matches `.python-version`, which is also what CI
+installs and what `pyproject.toml` targets. Resolve for it and develop on it: an
+interpreter one minor version off produces an environment the lockfile never
+described.
+
+Installation stays on plain `pip install -r`. `uv` is pinned in
+`requirements-dev.in`, so it arrives with the dev dependencies and no global
+install is needed.
+
 ## Sprint discipline
 
 Development is governed by [`docs/ROADMAP.md`](docs/ROADMAP.md), and its header
@@ -208,6 +263,16 @@ errado não existir.
 Não habilite *Require approvals* em repositório solo: o GitHub não deixa o autor
 aprovar o próprio PR, então todo merge ficaria impossível ou dependeria de
 bypass de admin.
+
+**Dependências:** declaradas em `requirements.in` e `requirements-dev.in`; os
+`.txt` são gerados e nunca editados à mão. O resolvedor é o `uv` em modo
+universal com alvo 3.11, e a instalação continua
+`pip install -r requirements-dev.txt`, que já traz as dependências de runtime
+nas versões do `requirements.txt`. A forma simples do comando não atualiza
+versões e não avisa; para mover versões, use `--upgrade`. O CI regenera os dois
+arquivos e falha se algum mudar. Por quê: o desenvolvimento é em Windows e o
+runtime é Linux, e um lockfile resolvido só no Windows deixaria o `uvloop` fora
+do container.
 
 **Disciplina de sprint:** o [`docs/ROADMAP.md`](docs/ROADMAP.md) governa o
 desenvolvimento, e as regras estão no cabeçalho dele. Um item de checklist são um

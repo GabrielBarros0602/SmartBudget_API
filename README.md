@@ -52,6 +52,7 @@ interface open to whatever consumes it.
 | Auth | JWT |
 | Tests | pytest |
 | Lint / format | ruff |
+| Dependencies | pip, with uv as the resolver |
 | Containers | Docker + docker-compose |
 | CI | GitHub Actions |
 
@@ -119,6 +120,14 @@ pytest
 ruff check .
 ruff format .
 ```
+
+### Changing dependencies
+
+Edit `requirements.in` or `requirements-dev.in`, never the `.txt` files, and
+regenerate the lockfiles with the commands in
+[CONTRIBUTING.md](CONTRIBUTING.md#dependencies). Installation stays on pip;
+`uv` is only the resolver, because development happens on Windows while the
+runtime is Linux.
 
 ## Roadmap
 
