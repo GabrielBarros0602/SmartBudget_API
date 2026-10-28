@@ -78,7 +78,7 @@ which this should be reconsidered are recorded in
 ```
 app/
 ├── api/            routers — HTTP in, HTTP out
-│   ├── health.py   liveness probe (unversioned, on purpose)
+│   ├── health.py   liveness and readiness probes (unversioned, on purpose)
 │   └── v1/         versioned domain routers
 ├── services/       business rules — the only place they may live
 ├── repositories/   database access — no rules
