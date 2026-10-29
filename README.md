@@ -106,8 +106,15 @@ python -m venv .venv
 pip install -r requirements-dev.txt
 Copy-Item .env.example .env
 
+docker compose up -d db
+alembic upgrade head
+
 uvicorn app.main:app --reload
 ```
+
+Migrations are not applied when the API starts. Run `alembic upgrade head`
+yourself, once and after every pull that brings a new one, so a restart never
+changes the schema ([ADR-004](docs/adr/ADR-004-migrations-run-explicitly.md)).
 
 The API is then available at `http://127.0.0.1:8000`, with interactive docs at
 `http://127.0.0.1:8000/docs`.
@@ -216,8 +223,14 @@ python -m venv .venv
 pip install -r requirements-dev.txt
 Copy-Item .env.example .env
 
+docker compose up -d db
+alembic upgrade head
+
 uvicorn app.main:app --reload
 ```
+
+As migrations não rodam quando a API sobe: `alembic upgrade head` é um passo
+seu, uma vez e depois de cada pull que trouxer migration nova.
 
 Documentação interativa em `http://127.0.0.1:8000/docs`.
 
