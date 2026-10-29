@@ -52,6 +52,7 @@ interface open to whatever consumes it.
 | Auth | JWT |
 | Tests | pytest |
 | Lint / format | ruff |
+| Type checking | mypy (strict) |
 | Dependencies | pip, with uv as the resolver |
 | Containers | Docker + docker-compose |
 | CI | GitHub Actions |
@@ -119,6 +120,7 @@ curl http://127.0.0.1:8000/health
 pytest
 ruff check .
 ruff format .
+mypy
 ```
 
 ### Changing dependencies
