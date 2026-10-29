@@ -114,7 +114,7 @@ a divergência que lockfile existe para evitar.
       CI, comando avulso no deploy —, nunca no start do container nem da aplicação, para que um
       restart, inclusive o pedido pelo liveness, nunca mude o schema
       → [ADR-004](adr/ADR-004-migrations-run-explicitly.md)
-- [ ] Alembic inicializado, primeira migration gerada e aplicada
+- [x] Alembic inicializado, primeira migration gerada e aplicada
 - [ ] Migration verificada nos dois sentidos pelo CI: `upgrade`, `downgrade`, `upgrade`. Um
       `downgrade` que nunca rodou só se revela quebrado no dia em que é preciso; no CI a
       verificação deixa de ser passo manual e vira permanente
