@@ -110,15 +110,24 @@ a divergência que lockfile existe para evitar.
 
 ### Bloco 4 — Migrations
 
-- [ ] **Decidir: quando as migrations rodam.** A direção é não aplicá-las no start do container
-      e rodá-las explicitamente, para que um deploy nunca mute o schema como efeito colateral de
-      um restart — e um restart pedido pelo liveness do S0.5 nunca vire migration. Fecha antes
-      da primeira migration, porque é ela que fixa como o `Dockerfile` e o README do S4 sobem o
-      banco
+- [x] **Decidido:** migrations rodam como passo explícito — à mão em desenvolvimento, passo do
+      CI, comando avulso no deploy —, nunca no start do container nem da aplicação, para que um
+      restart, inclusive o pedido pelo liveness, nunca mude o schema
+      → [ADR-004](adr/ADR-004-migrations-run-explicitly.md)
 - [ ] Alembic inicializado, primeira migration gerada e aplicada
 - [ ] Migration verificada nos dois sentidos pelo CI: `upgrade`, `downgrade`, `upgrade`. Um
       `downgrade` que nunca rodou só se revela quebrado no dia em que é preciso; no CI a
       verificação deixa de ser passo manual e vira permanente
+- [ ] Harness de integração contra PostgreSQL, antecipado do S2: banco próprio
+      (`smartbudget_test`), criado e migrado pela suíte e recusado se o nome não terminar em
+      `_test`; marcador `integration`; sem PostgreSQL a suíte para e diz isso, em vez de pular.
+      Antecipado porque as restrições e os índices do bloco 3 só fecham contra um banco migrado
+- [ ] Cada constraint do ADR-003 recusando uma linha inválida, testada contra o banco
+- [ ] Teste que compara cada constraint e índice migrado com o do model, pela definição que o
+      PostgreSQL imprime. O `alembic check` não enxerga a expressão de um `CHECK`, e uma
+      migration esquecida só apareceria sprints depois
+- [ ] `alembic check` no CI e piso de cobertura com `--cov-fail-under`, valor medido arredondado
+      para baixo — piso contra regressão, não meta; subir é decisão deliberada
 
 ---
 
@@ -133,8 +142,9 @@ a divergência que lockfile existe para evitar.
       `HTTPException`. Serviço que conhece HTTP não pode ser chamado fora de uma requisição —
       por teste unitário ou por script — sem arrastar o FastAPI junto, e o mapeamento espalhado
       diverge: o mesmo erro vira `400` num endpoint e `422` no outro
-- [ ] Testes de integração contra PostgreSQL real, marcados como `integration` para poderem ser
-      desmarcados com `pytest -m "not integration"`. Sessão falsa não pega o que importa aqui —
+- [ ] Testes de integração dos repositórios contra PostgreSQL real, sobre o harness do bloco 4
+      do S1, marcados como `integration` para poderem ser desmarcados com
+      `pytest -m "not integration"`. Sessão falsa não pega o que importa aqui —
       constraint violada, `NUMERIC` arredondando, agregação mensal sobre `DATE` —, e o marcador
       mantém a suíte rápida rodando sem Docker
 - [ ] Paginação nos endpoints de listagem
