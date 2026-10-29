@@ -15,9 +15,24 @@ jobs:
     name: API checks
     runs-on: ubuntu-latest
 
+    services:
+      db:
+        # The same major version as docker-compose.yml.
+        image: postgres:18-alpine
+        env:
+          POSTGRES_USER: smartbudget
+          POSTGRES_PASSWORD: smartbudget
+          POSTGRES_DB: smartbudget
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U smartbudget -d smartbudget"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
     env:
-      # Settings requires it with no default. No test connects yet, so a
-      # well-formed URL is enough; a PostgreSQL service arrives with migrations.
+      # A throwaway credential for the service above; it guards nothing.
       DATABASE_URL: postgresql+psycopg://smartbudget:smartbudget@localhost:5432/smartbudget
 
     steps:
@@ -59,6 +74,22 @@ jobs:
 
       - name: Type check
         run: mypy
+
+      # Migrations run as an explicit step, never on start (ADR-004).
+      - name: Apply migrations
+        run: alembic upgrade head
+
+      - name: Verify the models and the migrations agree
+        # A model changed without its migration passes every test that never
+        # touches the new column; this is the step that can tell.
+        run: alembic check
+
+      - name: Verify the migrations reverse cleanly
+        # A downgrade that never ran is only found broken on the day it is
+        # needed.
+        run: |
+          alembic downgrade base
+          alembic upgrade head
 
       - name: Test
         run: pytest
