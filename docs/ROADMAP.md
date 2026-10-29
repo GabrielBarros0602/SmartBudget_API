@@ -99,7 +99,7 @@ a divergência que lockfile existe para evitar.
       `CHECK`, categoria com transações não pode ser apagada (`NO ACTION`), dono consistente
       entre tabelas por FK composta, orçamento como uma linha por categoria por mês
       → [ADR-003](adr/ADR-003-domain-model.md)
-- [ ] Modelar o domínio: `User`, `Category`, `Transaction`, `Budget`
+- [x] Modelar o domínio: `User`, `Category`, `Transaction`, `Budget`
 - [ ] Restrições no schema, não só no Python, até onde o domínio pedir: foreign keys,
       `NOT NULL`, `CHECK` em valores, unicidade composta (nome de categoria único por usuário),
       `ON DELETE CASCADE` explícito onde o filho não existe sem o pai, e índice funcional onde a
