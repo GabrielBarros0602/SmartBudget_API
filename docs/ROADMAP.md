@@ -95,6 +95,10 @@ a divergência que lockfile existe para evitar.
 
 ### Bloco 3 — Modelos e restrições
 
+- [x] **Decidido:** valor sempre positivo com `kind` separado, `kind` como `VARCHAR` com
+      `CHECK`, categoria com transações não pode ser apagada (`NO ACTION`), dono consistente
+      entre tabelas por FK composta, orçamento como uma linha por categoria por mês
+      → [ADR-003](adr/ADR-003-domain-model.md)
 - [ ] Modelar o domínio: `User`, `Category`, `Transaction`, `Budget`
 - [ ] Restrições no schema, não só no Python, até onde o domínio pedir: foreign keys,
       `NOT NULL`, `CHECK` em valores, unicidade composta (nome de categoria único por usuário),
@@ -134,8 +138,10 @@ a divergência que lockfile existe para evitar.
       constraint violada, `NUMERIC` arredondando, agregação mensal sobre `DATE` —, e o marcador
       mantém a suíte rápida rodando sem Docker
 - [ ] Paginação nos endpoints de listagem
-- [ ] Regras de negócio a definir: categoria com transações pode ser apagada? Transação pode ter
-      data futura? Valor zero é válido?
+- [ ] Regras de negócio a definir: transação pode ter data futura? É regra de serviço, não
+      `CHECK`: uma condição com `current_date` não é imutável. Valor zero e exclusão de
+      categoria com transações já foram decididos no
+      [ADR-003](adr/ADR-003-domain-model.md)
 
 ---
 
