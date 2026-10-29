@@ -16,6 +16,11 @@ select = ["E", "W", "F", "I", "B", "UP", "SIM", "N"]
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["S101"]
 
+[tool.ruff.lint.isort]
+# The alembic/ directory makes ruff read the alembic package as local; it is a
+# third-party dependency, so its imports belong in that section.
+known-third-party = ["alembic"]
+
 [tool.mypy]
 python_version = "3.11"
 packages = ["app", "tests"]
